@@ -1,0 +1,26 @@
+const Discord = require('discord.js')
+const db = require('quick.db')
+
+let user = message.mentions.users.first() || message.author;
+let sharkdb = await db.fetch(`Shark_${user.id}`)
+if (sharkdb === null) await db.set(`Shark_${user.id}`, 0)
+  
+let piranhadb = await db.fetch(`Piranha_${user.id}`)
+if (piranhadb === null) await db.set(`Piranha_${user.id}`, 0)
+  
+let hammerheadsharkdb = await db.fetch(`Hammerhead shark_${user.id}`)
+if (hammerheadsharkdb === null) await db.set(`Hammerhead shark_${user.id}`, 0)
+  
+let salmondb = await db.fetch(`Salmon_${user.id}`)
+if (salmondb === null) await db.set(`Salmon_${user.id}`, 0)
+  
+let catfishdb = await db.fetch(`Catfish_${user.id}`)
+if (catfishdb === null) await db.set(`Catfish_${user.id}`, 0)
+  
+let fishingrod = await db.fetch(`Fishrod_${user.id}`, { target: '.type' })
+let rodamount = await db.fetch(`Fishrod_${user.id}`, { target: '.number' })
+const fishies = { Shark: sharkdb, Piranha: piranhadb, 'Hammerhead Shark': hammerheadsharkdb, Salmon: salmondb, Catfish: catfishdb, [fishingrod + ' Rod']: rodamount  }
+Object.entries(fishies)
+let inv = Object.entries(fishies).filter( ([fishname, amount]) => amount ).map( ([fishname, amount]) => `${fishname} x${amount}`).join('\n')
+if(typeof inv === 'string' && inv.length < 1) return msg.channel.send(`**${user.tag}** does not inventory`)
+    msg.channel.send('inv')
